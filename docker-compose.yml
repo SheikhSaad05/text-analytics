@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  emotion:
+    restart: always
+    build:
+      context: .
+      dockerfile: Docker/app_emotions.Dockerfile
+    ports: [ '5011:5011' ]
+    volumes: [
+        '.:/app'
+    ]
+
+  sentiment:
+    restart: always
+    build:
+      context: .
+      dockerfile: Docker/app_sentiments.Dockerfile
+    ports: [ '5010:5010' ]
+    volumes: [
+        '.:/app'
+    ]
+
+  keyword:
+    restart: always
+    build:
+      context: .
+      dockerfile: Docker/app_keywords.Dockerfile
+    ports: [ '5014:5014' ]
+    volumes: [
+        '.:/app'
+    ]
+
+#  topic:
+#    restart: always
+#    build:
+#      context: .
+#      dockerfile: Docker/app_topics.Dockerfile
+#    ports: [ '5013:5013' ]
+#    volumes: [
+#        '.:/app'
+#    ]
+
+  question:
+    restart: always
+    build:
+      context: .
+      dockerfile: Docker/app_questions.Dockerfile
+    ports: [ '5012:5012' ]
+    volumes: [
+        '.:/app'
+    ]
+
+
+  web:
+    restart: always
+    build:
+      context: .
+      dockerfile: Docker/app.Dockerfile
+    ports: [ '5000:5000' ]
+    volumes: [
+      '.:/app'
+    ]
+
+  nginx:
+    restart: always
+    build:
+      context: .
+      dockerfile: Docker/nginx.Dockerfile
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - /app/static
+
+    depends_on:
+    - web
+volumes:
+  web:
